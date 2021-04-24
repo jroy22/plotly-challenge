@@ -7,6 +7,21 @@ function InitDashboard(){
     console.log("Init Dashboard()");
 
     //Populate the dropdown
+        var selector = d3.select("#selDataset");
+
+        d3.json("./data/samples.json").then(function (data) {
+            console.log(data);
+            
+            var sampleName = data.names;
+            sampleName.forEach(sampleId => {
+                selector.append("option")
+                        .text(sampleId)
+                        .property("value", sampleId);
+            });
+
+        });
+
+
     //Update the bargraph
     //Update Bubble Graph
     //Update Demographic Info
