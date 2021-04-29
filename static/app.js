@@ -8,6 +8,22 @@ console.log("app.js loaded");
 // Function to Draw a bar graph for a given id
 function DrawBarGraph(sampleId) {
     console.log(`DrawBarGraph ${sampleId}`);
+    d3.json("./data/samples.json").then(function (data) {
+        console.log(data);
+
+        var samples = data.samples;
+        var resultArray = samples.filter(s => s.id == sampleId);
+        console.log(resultArray);
+
+        var result = resultArray[0];
+        console.log(result);
+
+        var otu_ids = result.otu_ids;
+        var otu_labels = result.otu_labels;
+        console.log(otu_ids);
+        console.log(otu_labels);
+
+    }) 
 }
 
 // Function to Draw a bubble chart for a given id
