@@ -11,6 +11,7 @@ function DrawBarGraph(sampleId) {
     d3.json("./data/samples.json").then(function (data) {
         console.log(data);
 
+        // Getting the values from the json to variables for the bar graph
         var samples = data.samples;
         var resultArray = samples.filter(s => s.id == sampleId);
         console.log(resultArray);
@@ -20,8 +21,29 @@ function DrawBarGraph(sampleId) {
 
         var otu_ids = result.otu_ids;
         var otu_labels = result.otu_labels;
+        var sample_values = result.sample_values;
         console.log(otu_ids);
         console.log(otu_labels);
+        console.log(sample_values);
+
+        // Setting up the bar graph
+        yticks = otu_ids.slice(0,10).map(otu_ids =>  `OTU ${otu_ids}`).reverse()
+
+        var barData = {
+            x: sample_values.slice(0,10).reverse(),
+            y: yticks,
+            type: "bar",
+            text: otu_labels.slice(0,10).reverse(),
+            orientation: "h"
+        }
+
+        var barArray = [barData];
+        var barLayout = {
+            title: "Top 10 Bacteria Cultures Found",
+            margin: {t:130, l:150}
+        }
+
+        Plotly.newPlot("bar", barArray, barLayout);
 
     }) 
 }
