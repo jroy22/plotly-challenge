@@ -53,7 +53,7 @@ function DrawBubbleChart(sampleId) {
     d3.json("./data/samples.json").then(function (data) {
         //console.log(data);
 
-        // Getting the values from the json to variables for the bar graph
+        // Getting the values from the json to variables for the bubble graph
         var samples = data.samples;
         var resultArray = samples.filter(s => s.id == sampleId);
         //console.log(resultArray);
@@ -89,6 +89,26 @@ function DrawBubbleChart(sampleId) {
 // Function to Create a Demographics Table for a given id
 function CreateDemoTable(sampleId) {
     console.log(`CreateDemoTable ${sampleId}`);
+    d3.json("./data/samples.json").then(function (data) {
+        console.log(data);
+
+        // Getting the values from the json to variables for the demographics table
+        var demographics = data.metadata;
+        var resultArray = demographics.filter(s => s.id == sampleId);
+        console.log(resultArray);
+
+        // Getting the information for an subject 
+        var information = resultArray[0];
+        console.log(information);
+
+        // Putting the information onto the table 
+        var table = d3.select("#sample-metadata");
+        table.html("");
+        Object.entries(information).forEach(([key, value]) => {
+            table.append("h5").text(`${key}: ${value}`);
+        });
+
+    });
 }
 
 // Function to Draw a gauge chart for a given id
