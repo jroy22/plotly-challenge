@@ -9,22 +9,22 @@ console.log("app.js loaded");
 function DrawBarGraph(sampleId) {
     console.log(`DrawBarGraph ${sampleId}`);
     d3.json("./data/samples.json").then(function (data) {
-        console.log(data);
+        //console.log(data);
 
         // Getting the values from the json to variables for the bar graph
         var samples = data.samples;
         var resultArray = samples.filter(s => s.id == sampleId);
-        console.log(resultArray);
+        //console.log(resultArray);
 
         var result = resultArray[0];
-        console.log(result);
+        //console.log(result);
 
         var otu_ids = result.otu_ids;
         var otu_labels = result.otu_labels;
         var sample_values = result.sample_values;
-        console.log(otu_ids);
-        console.log(otu_labels);
-        console.log(sample_values);
+        // console.log(otu_ids);
+        // console.log(otu_labels);
+        // console.log(sample_values);
 
         // Setting up the bar graph
         yticks = otu_ids.slice(0,10).map(otu_ids =>  `OTU ${otu_ids}`).reverse()
@@ -44,13 +44,46 @@ function DrawBarGraph(sampleId) {
         }
 
         Plotly.newPlot("bar", barArray, barLayout);
-
-    }) 
+    }); 
 }
 
 // Function to Draw a bubble chart for a given id
 function DrawBubbleChart(sampleId) {
     console.log(`DrawBubbleChart ${sampleId}`);
+    d3.json("./data/samples.json").then(function (data) {
+        //console.log(data);
+
+        // Getting the values from the json to variables for the bar graph
+        var samples = data.samples;
+        var resultArray = samples.filter(s => s.id == sampleId);
+        //console.log(resultArray);
+
+        var result = resultArray[0];
+        //console.log(result);
+
+        var otu_ids = result.otu_ids;
+        var otu_labels = result.otu_labels;
+        var sample_values = result.sample_values;
+        
+        var bubbleData = {
+            x: otu_ids,
+            y: sample_values,
+            text: otu_labels,
+            mode: "markers",
+            marker: {
+                size: sample_values,
+                color: otu_ids,
+            }
+        }
+
+        var bubbleArray = [bubbleData];
+
+        var bubbleLayout = {
+            xaxis: {title: "OTU ID"}
+        }
+
+        Plotly.newPlot("bubble", bubbleArray, bubbleLayout);
+});
 }
 
 // Function to Create a Demographics Table for a given id
