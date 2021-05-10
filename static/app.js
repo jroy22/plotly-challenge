@@ -90,7 +90,7 @@ function DrawBubbleChart(sampleId) {
 function CreateDemoTable(sampleId) {
     console.log(`CreateDemoTable ${sampleId}`);
     d3.json("./data/samples.json").then(function (data) {
-        console.log(data);
+        //console.log(data);
 
         // Getting the values from the json to variables for the demographics table
         var demographics = data.metadata;
@@ -114,6 +114,46 @@ function CreateDemoTable(sampleId) {
 // Function to Draw a gauge chart for a given id
 function DrawGaugeChart(sampleId) {
     console.log(`DrawGauge ${sampleId}`);
+    d3.json("./data/samples.json").then(function (data) {
+        console.log(data);
+
+        // Getting the values from the json to variables for the demographics table
+        var demographics = data.metadata;
+        var resultArray = demographics.filter(s => s.id == sampleId);
+        // console.log(resultArray);
+
+        var washingFreq = resultArray[0]['wfreq'];
+        console.log(washingFreq);
+
+        var gaugeData = {
+            domain: {x: [0,10], y: [0,10]},
+            value: washingFreq,
+            title: {text: 'Scrubs per Week'},
+            type: "indicator",
+            mode: "gauge+number",
+            gauge:{
+            axis:{range: [0, 10]},
+            steps: [
+                {range: [0, 2], color: "#cce7be"},
+                {range: [2, 4], color: "#afd999"},
+                {range: [4, 6], color: "#93cb73"},
+                {range: [6, 8], color: "#84c461"},
+                {range: [8, 10], color:"#76bd4e"}
+            ]
+
+           }
+        }
+
+        var gaugeArray = [gaugeData];
+
+        var gaugeLayout = {
+            title: "Belly Button Washing Frequency"
+        }
+
+        Plotly.newPlot("gauge", gaugeArray, gaugeLayout);
+
+    });
+
 }
 
 // Event handler function when the a new sample id is choosen
